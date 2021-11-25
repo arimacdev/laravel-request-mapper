@@ -19,7 +19,7 @@
   "license": "MIT",
   "require": {
     "doctrine/annotations": "^1.6",
-    "doctrine/cache": "^2.0",
+    "doctrine/cache": "^1.0",
     "illuminate/contracts": "^8.0",
     "illuminate/http": "^8.0",
     "illuminate/support": "^8.0",
