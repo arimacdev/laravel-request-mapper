@@ -38,7 +38,7 @@ class FillingChainProcessorTest extends TestCase
         $this->expectException(HandlerNotFoundException::class);
         $this->expectExceptionMessage("no handler found for Maksi\LaravelRequestMapper\Tests\Unit\Stub\JsonRequestDataStub class");
         $fillingChainProcessor = $this->createFillingChainProcessor();
-        $fillingChainProcessor->handle(new JsonRequestDataStub([]));
+        $fillingChainProcessor->handle(new JsonRequestDataStub([]), new Request());
     }
 
     /**
@@ -47,7 +47,6 @@ class FillingChainProcessorTest extends TestCase
     private function createFillingChainProcessor(): FillingChainProcessor
     {
         return new FillingChainProcessor(
-            new Request(),
             $this->validationProcessor
         );
     }

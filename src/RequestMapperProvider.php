@@ -6,6 +6,7 @@ namespace Maksi\LaravelRequestMapper;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Maksi\LaravelRequestMapper\Filling\RequestData\RequestData;
 use Maksi\LaravelRequestMapper\Filling\Strategies\AllStrategy;
@@ -113,9 +114,11 @@ class RequestMapperProvider extends ServiceProvider
     {
         $this->app->resolving(function ($object) {
             if ($object instanceof RequestData) {
+                /** @var Request **/
+                $request = $this->app->make(Request::class);
                 /** @var FillingChainProcessor $fillingChainProcessor */
                 $fillingChainProcessor = $this->app->make(FillingChainProcessor::class);
-                $fillingChainProcessor->handle($object);
+                $fillingChainProcessor->handle($object, $request);
             }
 
             return $object;

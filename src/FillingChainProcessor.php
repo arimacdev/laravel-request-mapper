@@ -18,11 +18,6 @@ use Maksi\LaravelRequestMapper\Validation\ValidationProcessor;
 class FillingChainProcessor
 {
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var ValidationProcessor
      */
     private $validationHandler;
@@ -35,12 +30,10 @@ class FillingChainProcessor
     /**
      * StrategiesHandler constructor.
      *
-     * @param Request             $request
      * @param ValidationProcessor $validationHandler
      */
-    public function __construct(Request $request, ValidationProcessor $validationHandler)
+    public function __construct(ValidationProcessor $validationHandler)
     {
-        $this->request = $request;
         $this->validationHandler = $validationHandler;
     }
 
@@ -61,11 +54,11 @@ class FillingChainProcessor
      *
      * @throws Validation\ResponseException\AbstractException
      */
-    public function handle(RequestData $object): void
+    public function handle(RequestData $object, Request $request): void
     {
         foreach ($this->strategies as $strategy) {
-            if ($strategy->support($this->request, $object)) {
-                $data = $strategy->resolve($this->request);
+            if ($strategy->support($request, $object)) {
+                $data = $strategy->resolve($request);
                 $this->validationHandler->validateBeforeFilling(new ValidateData($object, $data));
                 $object->__construct($data);
                 $this->validationHandler->validateAfterFilling(new ValidateData($object, $data));
